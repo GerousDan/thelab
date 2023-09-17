@@ -39,6 +39,47 @@
                     "name": "n"
                 }
             ]
+        },
+        {
+            "id": "SETVALUE",
+            "name": "SETVALUE",
+            "parameters": [
+                {
+                    "description": "Key in the key-value pair to set",
+                    "name": "key",
+                    "type": "any"
+                },
+                {
+                    "description": "Value in the key-value pair to set",
+                    "name": "value",
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "id": "GETVALUE",
+            "name": "GETVALUE",
+            "parameters": [
+                {
+                    "description": "Key the value of which to get",
+                    "name": "key",
+                    "type": "any"
+                }
+            ],
+            "result": {}
+        },
+        {
+            "id": "WEBSERVICE",
+            "name": "WEBSERVICE",
+            "parameters": [
+                {
+                    "description": "url",
+                    "name": "url",
+                    "type": "any"
+                }
+            ],
+            "result": {}
         }
     ]
 }

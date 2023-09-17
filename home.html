@@ -2,27 +2,29 @@
      Licensed under the MIT License. -->
 
 <html>
-    <head>
-        <title>Custom functions using WebWorker</title>
-        <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
-        <script src="functions.js" type="text/javascript"></script>
-        <script type="text/javascript">
+
+<head>
+    <title>Custom functions using WebWorker</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+    <script src="functions.js" type="text/javascript"></script>
+    <script type="text/javascript">
 
         let ballX = 100;
         let ballY = 10;
         let ballDirection = 'downRight';
 
-        Office.onReady(function() {
+        Office.onReady(function () {
             animate();
             console.log("Office.onReady");
         });
 
         function animate() {
-            
-            setInterval(drawBall, 10);
-         }
 
-         const drawBall = () => {
+            setInterval(drawBall, 10);
+        }
+
+        const drawBall = () => {
             const canvas = document.getElementById('mycanvas');
 
             if (canvas.getContext) {
@@ -32,26 +34,26 @@
                 const radius = 20;
 
                 ctx.beginPath();
-                ctx.arc(ballX, ballY, radius, 0, 2*Math.PI, false);
-                ctx.fillStyle = 'green';
+                ctx.arc(ballX, ballY, radius, 0, 2 * Math.PI, false);
+                ctx.fillStyle = 'white';
                 ctx.fill();
-                ctx.lineWidth = 4;
-                ctx.strokeStyle = '#003300';
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = 'black';
                 ctx.stroke();
             }
-         }
+        }
 
-         const moveBall = (width,height) => {
-             //check for ball collision with context boundaries
-           
-             if (ballX <= 0) {
-                 if (ballDirection === 'upLeft') {
-                     ballDirection = 'upRight';
-                 } else {
-                     ballDirection = "downRight";
-                 }
-             }
-            if (ballY <=0) {
+        const moveBall = (width, height) => {
+            //check for ball collision with context boundaries
+
+            if (ballX <= 0) {
+                if (ballDirection === 'upLeft') {
+                    ballDirection = 'upRight';
+                } else {
+                    ballDirection = "downRight";
+                }
+            }
+            if (ballY <= 0) {
                 if (ballDirection === 'upLeft') {
                     ballDirection = 'downLeft';
 
@@ -60,7 +62,7 @@
                 }
             }
             if (ballX >= width) {
-                if (ballDirection ==='upRight'){
+                if (ballDirection === 'upRight') {
                     ballDirection = 'upLeft';
 
                 } else {
@@ -68,7 +70,7 @@
                 }
             }
             if (ballY >= height) {
-                if (ballDirection ==='downRight'){
+                if (ballDirection === 'downRight') {
                     ballDirection = 'upRight';
                 } else {
                     ballDirection = 'upLeft';
@@ -96,11 +98,26 @@
                     break;
                 }
             }
-         }
+        }
 
-        </script>
-    </head>
-    <body>
-        <canvas id = "mycanvas" width = "200" height = "200"></canvas>
-    </body>
+        function setKey() {
+            const key = document.getElementById('key').value;
+            OfficeRuntime.storage.setItem('key', key);
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="root-1"> <canvas id="mycanvas" width="200" height="200"></canvas>
+        <label><a target="_blank" href="https://platform.openai.com/account/api-keys" class="root-2" tabindex="2">OpenAI
+                API key</a></label>
+        <form class="root-3" onsubmit="setKey()">
+            <input class="root-1" type="password" id="key" spellcheck="false"
+                placeholder="Secret key (usually starting with &quot;sk-&quot;)" aria-invalid="false" value=""
+                tabindex="1">
+        </form>
+    </div>
+</body>
+
 </html>
