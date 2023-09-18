@@ -103,7 +103,6 @@ CustomFunctions.associate("TEST_UI_THREAD", function (n) {
 
 /**
  * @customfunction
- * @description Stores a key-value pair
  * @param {any} key Key in the key-value pair to set 
  * @param {any} value Value in the key-value pair to set 
 */
@@ -114,22 +113,23 @@ function SetValue(key, value) {
         return "Error: Unable to save item with key '" + key + "' to storage. " + error;
     });
 }
+CustomFunctions.associate("SETVALUE", SetValue);
 
 /**
  * @customfunction
- * @description Gets value from a key-value storage 
  * @param {any} key Key the value of which to get
 */
 function GetValue(key) {
     return OfficeRuntime.storage.getItem(key);
 }
+CustomFunctions.associate("GETVALUE", GetValue);
 
 /**
  * Returns data from a web service on the Internet or Intranet
  * @customfunction
  * @param {string} url
  * @return {string} data from a web service on the Internet or Intranet
- */
+*/
 async function WebService(url) {
     const response = await fetch(url);
     if (!response.ok) {
@@ -137,7 +137,92 @@ async function WebService(url) {
     }
     return response.text();
 }
+CustomFunctions.associate("WEBSERVICE", WebService);
 
-CustomFunctions.associate("SETVALUE", SetValue);
-CustomFunctions.associate("GETVALUE", GetValue);
-CustomFunctions.associate("WEBSERVICE",WebService);
+/**
+ * Returns specific data from XML content by using the specified xpath
+ * @customfunction
+ * @param {string} xml
+ * @param {string} xpath
+ * @return {string[][]} specific data from XML content by using the specified xpath
+*/
+async function FilterXml(xml, xpath) {
+    let doc = new DOMParser();
+    let dom = doc.parseFromString(xml, "text/xml");
+    let query = dom.evaluate(xpath, dom, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    let results = [];
+    for (let i = 0, length = query.snapshotLength; i < length; ++i) {
+        results.push([query.snapshotItem(i).textContent]);
+    }
+    return results;
+}
+CustomFunctions.associate("FILTERXML", FilterXml);
+
+/**
+ * Returns a URL-encoded string
+ * @customfunction
+ * @param {string[][]} Text is a string to be URL encoded
+ * @return {Promise<string[][]>} a URL - encoded strings
+*/
+async function EncodeUrl(Text) {
+    return Text.map((i) => i.map((text) => encodeURIComponent(text)));
+}
+CustomFunctions.associate("ENCODEURL", EncodeUrl);
+
+/**
+ * Returns a completion for the message
+ * @customfunction
+ * @param {string} message The message to generate chat completions for.
+ * @param {number} [temperature] The sampling temperature between 0.0 and 2 Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic (default: 0.5).
+ * @param {number} [max_tokens] The maximum number of tokens to generate in the chat completion (default: 256).
+ * @param {string} [model] The model to use (default: gpt-4).
+ * @param {number} [width] The maximum number of characters per line (default: 68).
+ * @param {string} [apiKey] OpenAI api key.
+ * @return {string} Completion for the message.
+*/
+async function ChatGpt(
+    message,
+    temperature,
+    max_tokens,
+    model,
+    width,
+    apiKey
+) {
+    // Set the HTTP headers
+    if (apiKey == null) apiKey = GetValue("key");
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", `Bearer ${apiKey}`);
+
+    // Set the HTTP body
+    if (model == null) model = "gpt-4"; //gpt-3.5-turbo
+    const prompt = [
+        { role: "system", content: "You are a helpful assistant." },
+        { role: "user", content: message }
+    ];
+    if (max_tokens < 1 || max_tokens == null || max_tokens > 4000) max_tokens = 256;
+    if (temperature < 0 || temperature == null || temperature > 2) temperature = 0.5;
+    const body = JSON.stringify({
+        model: model,
+        messages: prompt,
+        max_tokens: max_tokens,
+        temperature: temperature
+    });
+
+    // Fetch the request
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: headers,
+        body: body
+    });
+
+    // Parse the response as JSON
+    const json = await response.json();
+
+    if (width == 0 || width == null) width = 68;
+    return json.choices[0].message["content"].replace(
+        new RegExp(`(?![^\\n]{1,${width}}$)([^\\n]{1,${width}})\\s`, "g"),
+        "$1\n"
+    );
+}
+CustomFunctions.associate("CHATGPT", ChatGpt);
