@@ -144,7 +144,7 @@ CustomFunctions.associate("WEBSERVICE", WebService);
  * @customfunction
  * @param {string} xml
  * @param {string} xpath
- * @return {string[][]} specific data from XML content by using the specified xpath
+ * @return {string} specific data from XML content by using the specified xpath
 */
 async function FilterXml(xml, xpath) {
     let doc = new DOMParser();

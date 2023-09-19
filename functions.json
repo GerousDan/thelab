@@ -84,6 +84,7 @@
         {
             "description": "Returns specific data from XML content by using the specified xpath",
             "id": "FILTERXML",
+            "helpurl": "https://support.microsoft.com/en-gb/office/filterxml-function-4df72efc-11ec-4951-86f5-c1374812f5b7",
             "parameters": [
                 {
                     "description": "A string in valid XML format",
