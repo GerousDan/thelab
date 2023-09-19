@@ -139,35 +139,35 @@ async function WebService(url) {
 }
 CustomFunctions.associate("WEBSERVICE", WebService);
 
-/**
- * Returns specific data from XML content by using the specified xpath
- * @customfunction
- * @param {string} xml
- * @param {string} xpath
- * @return {string[][]} specific data from XML content by using the specified xpath
-*/
-async function FilterXml(xml, xpath) {
-    let doc = new DOMParser();
-    let dom = doc.parseFromString(xml, "text/xml");
-    let query = dom.evaluate(xpath, dom, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-    let results = [];
-    for (let i = 0, length = query.snapshotLength; i < length; ++i) {
-        results.push([query.snapshotItem(i).textContent]);
-    }
-    return results;
-}
-CustomFunctions.associate("FILTERXML", FilterXml);
+// /**
+//  * Returns specific data from XML content by using the specified xpath
+//  * @customfunction
+//  * @param {string} xml
+//  * @param {string} xpath
+//  * @return {string[][]} specific data from XML content by using the specified xpath
+// */
+// async function FilterXml(xml, xpath) {
+//     let doc = new DOMParser();
+//     let dom = doc.parseFromString(xml, "text/xml");
+//     let query = dom.evaluate(xpath, dom, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+//     let results = [];
+//     for (let i = 0, length = query.snapshotLength; i < length; ++i) {
+//         results.push([query.snapshotItem(i).textContent]);
+//     }
+//     return results;
+// }
+// CustomFunctions.associate("FILTERXML", FilterXml);
 
-/**
- * Returns a URL-encoded string
- * @customfunction
- * @param {string[][]} Text is a string to be URL encoded
- * @return {Promise<string[][]>} a URL - encoded strings
-*/
-async function EncodeUrl(Text) {
-    return Text.map((i) => i.map((text) => encodeURIComponent(text)));
-}
-CustomFunctions.associate("ENCODEURL", EncodeUrl);
+// /**
+//  * Returns a URL-encoded string
+//  * @customfunction
+//  * @param {string[][]} Text is a string to be URL encoded
+//  * @return {Promise<string[][]>} a URL - encoded strings
+// */
+// async function EncodeUrl(Text) {
+//     return Text.map((i) => i.map((text) => encodeURIComponent(text)));
+// }
+// CustomFunctions.associate("ENCODEURL", EncodeUrl);
 
 /**
  * Returns a completion for the message
