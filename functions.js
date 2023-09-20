@@ -126,9 +126,10 @@ CustomFunctions.associate("GETVALUE", GetValue);
 
 /**
  * Returns data from a web service on the Internet or Intranet
- * @customfunction
- * @param {string} url
+ * @customfunction WEBSERVICE
+ * @param {string} url The URL of the web service to be called
  * @return {string} data from a web service on the Internet or Intranet
+ * @helpurl "https://support.microsoft.com/en-us/office/webservice-function-0546a35a-ecc6-4739-aed7-c0b7ce1562c4"
 */
 async function WebService(url) {
     const response = await fetch(url);
@@ -137,7 +138,7 @@ async function WebService(url) {
     }
     return response.text();
 }
-CustomFunctions.associate("WEBSERVICE", WebService);
+// CustomFunctions.associate("WEBSERVICE", WebService);
 
 // /**
 //  * Returns specific data from XML content by using the specified xpath
