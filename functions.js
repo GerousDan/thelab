@@ -138,7 +138,7 @@ async function WebService(url) {
     }
     return response.text();
 }
-// CustomFunctions.associate("WEBSERVICE", WebService);
+CustomFunctions.associate("WEBSERVICE", WebService);
 
 // /**
 //  * Returns specific data from XML content by using the specified xpath
