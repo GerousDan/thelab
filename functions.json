@@ -80,7 +80,7 @@
                     "type": "string"
                 }
             ],
-            "result": {"string"}
+            "result": {}
         },
         {
             "description": "Returns a completion for the message",
