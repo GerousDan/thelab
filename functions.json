@@ -70,6 +70,19 @@
             "result": {}
         },
         {
+            "description": "Returns data from a web service on the Internet or Intranet",
+            "id": "WEBSERVICE",
+            "helpUrl": "https://support.microsoft.com/en-us/office/webservice-function-0546a35a-ecc6-4739-aed7-c0b7ce1562c4",
+            "parameters": [
+                {
+                    "description": "The URL of the web service to be called",
+                    "name": "url",
+                    "type": "string"
+                }
+            ],
+            "result": {"string"}
+        },
+        {
             "description": "Returns a completion for the message",
             "id": "CHATGPT",
             "parameters": [
